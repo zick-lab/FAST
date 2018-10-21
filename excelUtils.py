@@ -157,25 +157,31 @@ def write_excel(fast_output_dir, sample_id, dfcnv, dfsv, dfamplicons, df_focused
     iir = 0
     if dfcnv is not None:
         for ir, row in dfcnv.iterrows():
-            if np.isfinite(row['segment']):
-                frmt = formats['colored'][used_colors[row['segment']]%len(COLORS)]
-            else:
-                frmt = None
-            for ic in range(len(cols)-1):
+            for ic, col in enumerate(dfcnv.columns):
+                if col=='segment':
+                    if np.isfinite(row['segment']):
+                        frmt = formats['colored'][used_colors[row['segment']] % len(COLORS)]
+                    else:
+                        frmt = None
+                elif col=='amplicon':
+                    if np.isfinite(row['amplicon']):
+                        frmt = formats['bordered'][used_amplicons_colors[row['amplicon']] % len(COLORS)]
+                    else:
+                        frmt = None
+                else:
+                    frmt = None
+
                 if not pd.isnull(row[ic]):
-                    worksheet1.write(OFFSET+iir, ic, row[ic],frmt)
+                    if frmt:
+                        worksheet1.write(OFFSET+iir, ic, row[ic],frmt)
+                    else:
+                        worksheet1.write(OFFSET + iir, ic, row[ic])
                 else:
                     worksheet1.write_blank(OFFSET+iir,ic,None)
-            if np.isfinite(row['amplicon']):
-                frmt = formats['bordered'][used_amplicons_colors[row['amplicon']]%len(COLORS)]
-                worksheet1.write(OFFSET+iir, ic+1, row['amplicon'],frmt)
-            else:
-                worksheet1.write_blank(OFFSET+iir,ic+1,None)
-
-
             iir+=1
-
     OFFSET += iir
+    print dfcnv
+
 
     # write empty rows
     OFFSET = writeEmptyRows(worksheet1, OFFSET, 3)
