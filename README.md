@@ -1,1 +1,1 @@
-# FAST
+# FAST - FindAmpliconSTructure
