@@ -374,7 +374,6 @@ def run(excel, remove_unmappble, unify_seg, config_file, sample_id, cnv_file, sv
     temp = df_amp_gene.groupby('amplicon')['Gene'].apply(lambda g: ', '.join([x for x in g if isinstance(x,str)])).to_frame().reset_index()
     dfamplicons = pd.merge(dfamplicons, temp, how='left', on='amplicon', copy=False)
 
-    print df_focused_genes
     df_segment_gene = pd.merge(dfcnv, df_focused_genes[['segment_id', 'Gene']], how='left', left_on='segment', right_on='segment_id', copy=False)
     temp = df_segment_gene.groupby('segment')['Gene'].apply(lambda g: ', '.join([x for x in g if isinstance(x,str)])).to_frame().reset_index()
     dfcnv = pd.merge(dfcnv, temp, how='left', on='segment', copy=False)
