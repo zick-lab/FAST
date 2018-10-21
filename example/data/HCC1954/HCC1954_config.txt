@@ -13,6 +13,5 @@ GENES = C:\Users\Michal\Documents\GitHub\FAST\example\extra_files\oncogenes.csv
 
 SAMPLE_ID = HCC1954
 FAST_OUTPUT_DIR = C:\Users\Michal\Documents\GitHub\FAST\example\data\HCC1954\FAST_OUT
-RESULTS = VARIATIONS_temp.csv
 CNV_INP = C:\Users\Michal\Documents\GitHub\FAST\example\data\HCC1954\FREEC\HCC1954.bam_CNVs
-SV_INP = C:\Users\Michal\Documents\GitHub\FAST\example\data\HCC1954\HCC1954\breakdancer\HCC1954_breakdancer.max
+SV_INP = C:\Users\Michal\Documents\GitHub\FAST\example\data\HCC1954\breakdancer\HCC1954_breakdancer.max
