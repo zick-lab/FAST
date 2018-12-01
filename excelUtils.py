@@ -116,13 +116,14 @@ def write_simple_table(worksheet, name, df, OFFSET,formats, index=False, comment
     return OFFSET
 
 
-def write_excel(fast_output_dir, sample_id, dfcnv, dfsv, dfamplicons, df_focused_genes):
+def write_excel(fast_output_dir, sample_id, dfcnv, dfsv, dfamplicons, dfsegments, df_focused_genes):
     outputFileXls = os.path.join(fast_output_dir, sample_id + '_FAST.xlsx')
     workbook   = xlsxwriter.Workbook(outputFileXls)
     worksheet1 = workbook.add_worksheet('FAST')
     formats = setFormats(workbook)
-    used_colors, ci = setColors(dfcnv['segment'].unique())
-    used_amplicons_colors , ci1= setColors(dfamplicons['amplicon'].unique())
+    used_colors, ci = setColors(dfcnv['Segment ID'].unique())
+    used_amplicons_colors , ci1= setColors(dfcnv['Amplicon ID'].unique())
+
     OFFSET = 0
     #
     # focused genes
@@ -136,9 +137,9 @@ def write_excel(fast_output_dir, sample_id, dfcnv, dfsv, dfamplicons, df_focused
     iir = 0
     if dfamplicons is not None:
         for ir, row in dfamplicons.iterrows():
-            ##            if np.isfinite(row['amplicon']):
-            frmt = formats['bordered'][used_amplicons_colors[row['amplicon']]%len(COLORS)]
-            worksheet1.write(OFFSET+iir, 0, row['amplicon'],frmt)
+            ##            if np.isfinite(row['Amplicon ID']):
+            frmt = formats['bordered'][used_amplicons_colors[row['Amplicon ID']]%len(COLORS)]
+            worksheet1.write(OFFSET+iir, 0, row['Amplicon ID'],frmt)
             for ic in range(1,len(cols)):
                 if not pd.isnull(row[ic]):
                     worksheet1.write(OFFSET+iir, ic, row[ic])
@@ -151,6 +152,28 @@ def write_excel(fast_output_dir, sample_id, dfcnv, dfsv, dfamplicons, df_focused
     # write empty rows
     OFFSET = writeEmptyRows(worksheet1, OFFSET, 3)
 
+    # write dfsegments data
+    cols = [] if dfsegments is None else list(dfsegments.columns.values)
+    OFFSET = writeHeader('Segment Analysis ', cols, worksheet1, OFFSET, formats)
+    iir = 0
+    if dfsegments is not None:
+        for ir, row in dfsegments.iterrows():
+            ##            if np.isfinite(row['Amplicon ID']):
+            frmt = formats['colored'][used_colors[row['Segment ID']] % len(COLORS)]
+            worksheet1.write(OFFSET+iir, 0, row['Segment ID'],frmt)
+            for ic in range(1,len(cols)):
+                if not pd.isnull(row[ic]):
+                    worksheet1.write(OFFSET+iir, ic, row[ic])
+                else:
+                    worksheet1.write_blank(OFFSET+iir,ic,None)
+            iir+=1
+
+        OFFSET += iir
+
+    # write empty rows
+    OFFSET = writeEmptyRows(worksheet1, OFFSET, 3)
+
+
     # write CNV data with corresponding colors
     cols = [] if dfcnv is None else list(dfcnv.columns.values)
     OFFSET = writeHeader('CNV Data', cols, worksheet1, OFFSET, formats)
@@ -158,14 +181,14 @@ def write_excel(fast_output_dir, sample_id, dfcnv, dfsv, dfamplicons, df_focused
     if dfcnv is not None:
         for ir, row in dfcnv.iterrows():
             for ic, col in enumerate(dfcnv.columns):
-                if col=='segment':
-                    if np.isfinite(row['segment']):
-                        frmt = formats['colored'][used_colors[row['segment']] % len(COLORS)]
+                if col=='Segment ID':
+                    if np.isfinite(row['Segment ID']):
+                        frmt = formats['colored'][used_colors[row['Segment ID']] % len(COLORS)]
                     else:
                         frmt = None
-                elif col=='amplicon':
-                    if np.isfinite(row['amplicon']):
-                        frmt = formats['bordered'][used_amplicons_colors[row['amplicon']] % len(COLORS)]
+                elif col=='Amplicon ID':
+                    if np.isfinite(row['Amplicon ID']):
+                        frmt = formats['bordered'][used_amplicons_colors[row['Amplicon ID']] % len(COLORS)]
                     else:
                         frmt = None
                 else:
@@ -180,7 +203,6 @@ def write_excel(fast_output_dir, sample_id, dfcnv, dfsv, dfamplicons, df_focused
                     worksheet1.write_blank(OFFSET+iir,ic,None)
             iir+=1
     OFFSET += iir
-    print dfcnv
 
 
     # write empty rows
@@ -194,21 +216,24 @@ def write_excel(fast_output_dir, sample_id, dfcnv, dfsv, dfamplicons, df_focused
     # write dfsv
     if dfsv is not None:
         for ir, row in dfsv.iterrows():
-            if pd.isnull(row['segment1']) and pd.isnull(row['segment2']):
+            if pd.isnull(row['Segment1 ID']) and pd.isnull(row['Segment2 ID']):
                 continue
             frmt_list = [None, None]
             for i in range(2):
-                if not pd.isnull(row['segment%d' % (i+1)]):
-                    frmt_list[i] = formats['colored'][used_colors[row['segment%d'%(i+1)]]%len(COLORS)]
+                if not pd.isnull(row['Segment%d ID' % (i+1)]):
+                    frmt_list[i] = formats['colored'][used_colors[row['Segment%d ID'%(i+1)]]%len(COLORS)]
 
             for ic, col in enumerate(dfsv.columns):
-                if col.endswith('1') or col.endswith('2'): # one of the following columns: Chr1/2	Pos1/2	Orientation1/2 segment1/2   edge1/2
-                    frmt = frmt_list[int(col[-1])-1]
+                # one of the following columns: Chr1/2	Pos1/2	Orientation1/2 segment1/2   edge1/2
+                if col.find('1') > 0:
+                    frmt = frmt_list[0]
+                elif col.find('2') > 0:
+                    frmt = frmt_list[1]
                 else:
-                    if col=='amplicon':
-                        if np.isfinite(row['amplicon']):
-                            frmt = formats['bordered'][used_amplicons_colors[row['amplicon']] % len(COLORS)]
-                            worksheet1.write(OFFSET + iir, ic, row['amplicon'], frmt)
+                    if col=='Amplicon ID':
+                        if np.isfinite(row['Amplicon ID']):
+                            frmt = formats['bordered'][used_amplicons_colors[row['Amplicon ID']] % len(COLORS)]
+                            worksheet1.write(OFFSET + iir, ic, row['Amplicon ID'], frmt)
                             continue
                     else: frmt = None
 
