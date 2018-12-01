@@ -81,3 +81,6 @@ The tool outputs the following files:
 Test data of HCC1954 is supplied under `example\data\HCC1954`
 <br>
 Run by:  `python Fast.py -c example\data\HCC1954\HCC1954_config.txt -e –r`
+
+## Author
+Michal Devir
