@@ -22,7 +22,7 @@ Parameters:
 -	--excel, -e           			generated colored excel file
 -	--remove_unmappble, -r     	remove unmappable areas, specifically centromeres and telomeres data
 <br>
-see example in <a href="#test_data">Running FAST on test data</a>
+see example below in "Running FAST on test data" section
 
 ## Inputs
 ### Input files
@@ -79,7 +79,7 @@ The tool outputs the following files:
 -	<SAMPLE_ID>_FAST.xlsx
 <br>File summarizing the data of all above files. In this file colors are assigned to cells, such that each amplicon has its own color.  This makes it easier for the human eye to see the relations between the different records.
 
-<a name="test_data">## Running FAST on test data</a>
+## Running FAST on test data
 Test data of HCC1954 is supplied under `example/data/HCC1954`
 <br>
 make sure to create `FAST_OUTPUT_DIR` as configured in `example/data/HCC1954/HCC1954_config.txt`
