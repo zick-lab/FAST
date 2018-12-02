@@ -21,6 +21,8 @@ Parameters:
 -	--config CONFIG, -c CONFIG	Configuration file
 -	--excel, -e           			generated colored excel file
 -	--remove_unmappble, -r     	remove unmappable areas, specifically centromeres and telomeres data
+<br>
+see example in <a href="#test_data">Running FAST on test data</a>
 
 ## Inputs
 ### Input files
@@ -77,12 +79,12 @@ The tool outputs the following files:
 -	<SAMPLE_ID>_FAST.xlsx
 <br>File summarizing the data of all above files. In this file colors are assigned to cells, such that each amplicon has its own color.  This makes it easier for the human eye to see the relations between the different records.
 
-## Running FAST on test data
-Test data of HCC1954 is supplied under `example\data\HCC1954`
+<a name="test_data">## Running FAST on test data</a>
+Test data of HCC1954 is supplied under `example/data/HCC1954`
 <br>
-make sure to create `FAST_OUTPUT_DIR` as configured in `example\data\HCC1954\HCC1954_config.txt`
+make sure to create `FAST_OUTPUT_DIR` as configured in `example/data/HCC1954/HCC1954_config.txt`
 <br>
-Run by:  `python Fast.py -c example\data\HCC1954\HCC1954_config.txt -e –r`
+Run by:  `python Fast.py -c example/data/HCC1954/HCC1954_config.txt -e –r`
 
 ## Author
 Michal Devir
