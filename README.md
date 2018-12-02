@@ -80,6 +80,8 @@ The tool outputs the following files:
 ## Running FAST on test data
 Test data of HCC1954 is supplied under `example\data\HCC1954`
 <br>
+make sure to create `FAST_OUTPUT_DIR` as configured in `example\data\HCC1954\HCC1954_config.txt`
+<br>
 Run by:  `python Fast.py -c example\data\HCC1954\HCC1954_config.txt -e –r`
 
 ## Author
