@@ -7,11 +7,11 @@ SV_MINIMAL_NUM_READS = 2
 SV_MINIMAL_DELETIONS_REMOVE = 1000
 
 [FILES]
-UNMAPPBLE_INP = C:\Users\Michal\Documents\GitHub\FAST\example\extra_files\cent_tel_from_ucsc.csv
-GENES = C:\Users\Michal\Documents\GitHub\FAST\example\extra_files\oncogenes.csv
+UNMAPPBLE_INP = example\extra_files\cent_tel_from_ucsc.csv
+GENES = example\extra_files\oncogenes.csv
 
 
 SAMPLE_ID = HCC1954
-FAST_OUTPUT_DIR = C:\Users\Michal\Documents\GitHub\FAST\example\data\HCC1954\FAST_OUT
-CNV_INP = C:\Users\Michal\Documents\GitHub\FAST\example\data\HCC1954\FREEC\HCC1954.bam_CNVs
-SV_INP = C:\Users\Michal\Documents\GitHub\FAST\example\data\HCC1954\breakdancer\HCC1954_breakdancer.max
+FAST_OUTPUT_DIR = example\data\HCC1954\FAST_OUT
+CNV_INP = example\data\HCC1954\FREEC\HCC1954.bam_CNVs
+SV_INP = example\data\HCC1954\breakdancer\HCC1954_breakdancer.max
