@@ -329,11 +329,17 @@ def assignSegmentStructureType(dfsv):
         return pd.DataFrame()
 
     # create a dataframe where each row contains one edge of the BP
-    df_bp1 = pd.DataFrame(data={'Segment ID': dfsv['Segment1 ID'], 'num_Reads': dfsv['num_Reads'], 'Structure Type': dfsv['Structure Type'], 'ind':dfsv.index})
-    df_bp2 = pd.DataFrame(data={'Segment ID': dfsv['Segment2 ID'], 'num_Reads': dfsv['num_Reads'], 'Structure Type': dfsv['Structure Type'],'ind': dfsv.index})
+    df_bp1 = pd.DataFrame(data={'Segment ID': dfsv['Segment1 ID'], 'num_Reads': dfsv['num_Reads'], 'Structure Type': dfsv['Structure Type'], 'orig_ind':dfsv.index})
+    df_bp2 = pd.DataFrame(data={'Segment ID': dfsv['Segment2 ID'], 'num_Reads': dfsv['num_Reads'], 'Structure Type': dfsv['Structure Type'],'orig_ind': dfsv.index})
+
     df_bps = pd.concat([df_bp1, df_bp2])
+    # workarround what seems to be a bug in drop_duplicates
+    df_bps["joined"] = df_bps["Segment ID"].map(str) + "" + df_bps["orig_ind"].map(str)
+    df_bps.reset_index(drop=True, inplace=True)
+
     # if two sides of bp are the same segment, remove one of it
-    df_bps.drop_duplicates(subset=['Segment ID', 'ind'], inplace=True)
+    #df_bps.drop_duplicates(subset=['Segment ID', 'orig_ind'], inplace=True)
+    df_bps.drop_duplicates(subset='joined', inplace=True)
 
     grouped_by_segment = df_bps.groupby(['Segment ID', 'Structure Type'], as_index = False)
     dfsegment_counts = grouped_by_segment['num_Reads'].agg({'num_Reads': 'sum'})
