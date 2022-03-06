@@ -2,6 +2,12 @@
 
 FAST is a tool for analyzing the structure and characteristics of amplicons, based on Copy Number Variations and Structural Variations data.
 
+## Citing FAST
+If you are using FAST in your research, please cite our paper as follows:
+
+Clinical Implications of Sub-grouping HER2 Positive Tumors by Amplicon Structure and Co-amplified Genes. Maoz, M., Devir, M., Inbar, M. et al.  Scientific Reports, 9, 18795 (2019). https://rdcu.be/b3X1q
+
+
 ## Prerequisites
 Python 2.7.x
 <br>
